@@ -1,0 +1,51 @@
+.pyc
+*.py[co]
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+.eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+
+# Virtual environment
+venv/
+.venv/
+
+# Installer logs
+pip-log.txt
+
+# Editors
+.vscode/
+.idea/
+
+# Unit test / coverage reports
+.coverage
+.tox
+.pytest_cache/
+cov.xml
+
+#Translations
+*.mo
+
+# Data
+SEC-Edgar-Data/
+
+# Sphinx
+docs/build
+
+# macOS specific
+.DS_Store
+
+# temporary files
+*~
+*.swp
+*.swo
+*.env

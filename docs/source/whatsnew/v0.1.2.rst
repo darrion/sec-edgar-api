@@ -1,0 +1,16 @@
+.. _whatsnew012:
+
+v0.1.2
+------
+
+Highlights
+~~~~~~~~~~
+
+* Fix issue related to file saving
+* Remove platform dependent file path
+
+Contributors
+~~~~~~~~~~~~
+
+- npsolve
+- Quartzing

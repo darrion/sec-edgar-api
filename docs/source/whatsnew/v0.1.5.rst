@@ -1,0 +1,40 @@
+v0.1.5
+------
+
+Highlights
+~~~~~~~~~~
+
+* Add Python 3.7, 3.8 support to Travis CI
+* Add support for over 100 forms using :class:`secedgar.filings.FilingType`
+* Prepare to deprecate :class:`secedgar.crawler.SecCrawler` in favor of separate filing class
+* Modularize crawler for more general requests
+* Fix count attribute to correctly fetch specified number of filings (or max available)
+* Add :class:`secedgar.filings.Filing` for fetching SEC filings
+* Add :class:`secedgar.filings.CIKLookup` for getting company CIKs by company ticker or company name
+* Add MANIFEST.in file to include requirements.txt, LICENSE, and README
+* Add What's New section to docs (replaces CHANGELOG)
+
+Testing
+~~~~~~~
+
+* Change xfails to use ``pytest.raises`` for various tests
+* Add ``TestFilings`` class to tests
+* Add tests for saving filings
+* Add tests for ticker/company name verification
+* Add tox for testing
+* Make Travis CI use setup used by PyPi to catch problems with setup.py
+
+Bugs
+~~~~
+
+* Fix count attribute to fetch desired number of filings. ``secedgar`` will now either fetch specified number or, if not enough filings exist, all filings will be fetched.
+
+Enhancements
+~~~~~~~~~~~~
+
+* Introduce :class:`secedgar.filings.base.AbstractFiling` class as abstract base class
+
+Contributors
+~~~~~~~~~~~~
+
+- jackmoody11
