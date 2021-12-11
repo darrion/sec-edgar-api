@@ -11,8 +11,8 @@ import os
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY']='Th1s1ss3cr3t'
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite://///Users/darrion/Development/sec-edgar-master/secedgar.db'
+app.config['SECRET_KEY'] = os.environ['SEC_APP_SECRET_KEY']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SEC_APP_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
@@ -35,12 +35,15 @@ def token_required(f):
         if not token:
             return jsonify({'message': 'a valid token is missing'})
 
+        data = {}
+        current_user = None
+
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             current_user = Users.query.filter_by(public_id=data['public_id']).first()
         except:
-            return jsonify({'message': 'token is invalid'})
-        return f(current_user, *args, **kwargs)
+            return jsonify({'message': 'token is invalid', 'data': data, 'current user': current_user})
+        return f()
    return decorator
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -67,11 +70,12 @@ def login_user():
         
     if check_password_hash(user.password, auth.password):  
         token = jwt.encode({'public_id': user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])  
-        return jsonify({'token' : token.decode('UTF-8')}) 
+        return jsonify({'token' : token}) 
 
     return make_response('could not verify',  401, {'WWW.Authentication': 'Basic realm: "login required"'})
 
 @app.route('/users', methods=['GET'])
+@token_required
 def get_all_users():  
    
     users = Users.query.all() 
@@ -106,9 +110,20 @@ def sec_form_4():
         p = Process(target=my_filings.save, args=('./downloads',))
         p.start()
         p.join()
-        files = [os.path.join(path, name) for path, subdirs, files in os.walk("downloads") for name in files if name != ".DS_Store"]
+        files = [
+            os.path.join(path, name) 
+            for path, subdirs, files in os.walk("downloads") 
+            for name in files if name != ".DS_Store"
+        ]
         file_count = len(files)
         return str(file_count)
+
+
+
+def custom_input(prompt: str):
+    value = input(prompt)
+    print ()
+    return value 
         
 if __name__ == "__main__": 
     app.run(port=8000, debug=True)

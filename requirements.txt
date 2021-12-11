@@ -9,3 +9,4 @@ flask
 python-xbrl
 Flask-SQLAlchemy
 PyJWT
+etext
